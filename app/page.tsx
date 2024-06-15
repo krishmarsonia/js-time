@@ -2,6 +2,31 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+const weeks = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
+
 export default function Home() {
   const largeCenter = "text-xl text-center";
   const [realDate, setRealDate] = useState(new Date());
@@ -159,14 +184,14 @@ export default function Home() {
         <p>
           The entered date is{" "}
           <span className="font-semibold">
-            {realDate.getDate()} {realDate.getMonth() + 1}{" "}
+            {realDate.getDate()} {months[realDate.getMonth()]}{" "}
             {realDate.getFullYear()}
           </span>
           .
         </p>
         <p>
           The day of the week is{" "}
-          <span className="font-semibold">{realDate.getDay()}</span>.
+          <span className="font-semibold">{weeks[realDate.getDay()]}</span>.
         </p>
         <p>
           The current Time is{" "}
