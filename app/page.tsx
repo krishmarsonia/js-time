@@ -37,6 +37,12 @@ export default function Home() {
   const [minutes, setMinutes] = useState(realDate.getMinutes());
   const [seconds, setSeconds] = useState(realDate.getSeconds());
   const [milliseconds, setMilliseconds] = useState(realDate.getTime());
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   useEffect(() => {
     setYear(realDate.getFullYear());
     setMonth(realDate.getMonth() + 1);
@@ -46,6 +52,8 @@ export default function Home() {
     setSeconds(realDate.getSeconds());
     setMilliseconds(realDate.getTime());
   }, [year, month, day, hours, milliseconds, minutes, seconds, realDate]);
+
+  if (!isMounted) return null;
   return (
     <main className="flex justify-center items-center flex-col mt-6">
       <div>
