@@ -1,4 +1,7 @@
+import { number, z } from "zod";
 import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const months = [
   "January",
@@ -25,259 +28,237 @@ const weeks = [
   "Saturday",
 ];
 
+const schema = z.object({
+  year: z.number().min(1970),
+  month: z.number().min(0).max(11),
+  day: z.number().min(1).max(31),
+  hours: z.number().min(0).max(23),
+  minutes: z.number().min(0).max(60),
+  seconds: z.number().min(0).max(60),
+  milliseconds: z.number().min(0),
+});
+
+type formFields = z.infer<typeof schema>;
+
 const Time = () => {
   const [realDate, setRealDate] = useState(new Date());
-  const [year, setYear] = useState(realDate.getFullYear());
-  const [month, setMonth] = useState(realDate.getMonth() + 1);
-  const [day, setDay] = useState(realDate.getDate());
-  const [hours, setHours] = useState(realDate.getHours());
-  const [minutes, setMinutes] = useState(realDate.getMinutes());
-  const [seconds, setSeconds] = useState(realDate.getSeconds());
-  const [milliseconds, setMilliseconds] = useState(realDate.getTime());
   const [isMounted, setIsMounted] = useState(false);
+
+  const {
+    register,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<formFields>({
+    defaultValues: {
+      milliseconds: realDate.getTime(),
+      seconds: realDate.getSeconds(),
+      minutes: realDate.getMinutes(),
+      hours: realDate.getHours(),
+      day: realDate.getDate(),
+      month: realDate.getMonth(),
+      year: realDate.getFullYear(),
+    },
+    mode: "onChange",
+    resolver: zodResolver(schema),
+  });
+
+  const formYears = watch("year");
+  const formMonth = watch("month");
+  const formDay = watch("day");
+  const formHours = watch("hours");
+  const formMinutes = watch("minutes");
+  const formSeconds = watch("seconds");
+  const formMilliseconds = watch("milliseconds");
 
   const largeCenter = "text-xl text-center";
   const inputFieldClass = "text-black h-8 text-lg w-48";
-  const divRow = "flex w-1/2 justify-around items-center mt-5 gap-5";
+  const divRow = "flex w-full justify-around items-center mt-5 gap-5";
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
-
-  //   useEffect(() => {
-  //     setYear(realDate.getFullYear());
-  //     setMonth(realDate.getMonth() + 1);
-  //     setDay(realDate.getDate());
-  //     setHours(realDate.getHours());
-  //     setMinutes(realDate.getMinutes());
-  //     setSeconds(realDate.getSeconds());
-  //     setMilliseconds(realDate.getTime());
-  //   }, [year, month, day, hours, milliseconds, minutes, seconds, realDate]);
-
   useEffect(() => {
     console.log("Year");
-    if (year > 1969) {
-      setYear(realDate.getFullYear());
-      setMonth(realDate.getMonth());
-      setDay(realDate.getDate());
-      setHours(realDate.getHours());
-      setMinutes(realDate.getMinutes());
-      setSeconds(realDate.getSeconds());
-      setMilliseconds(realDate.getTime());
+    console.log(formMilliseconds);
+    if (
+      formYears > 1969 &&
+      formMonth > -1 &&
+      formMonth < 12 &&
+      formDay > 0 &&
+      formDay < 32 &&
+      formHours > -1 &&
+      formHours < 24 &&
+      formMinutes > -1 &&
+      formMinutes < 60 &&
+      formSeconds > -1 &&
+      formSeconds < 60 &&
+      formMilliseconds > -1
+    ) {
+      setValue("year", realDate.getFullYear());
+      setValue("month", realDate.getMonth());
+      setValue("day", realDate.getDate());
+      setValue("hours", realDate.getHours());
+      setValue("minutes", realDate.getMinutes());
+      setValue("seconds", realDate.getSeconds());
+      setValue("milliseconds", realDate.getTime());
     }
-  }, [year, realDate]);
-
-  useEffect(() => {
-    console.log("month");
-    if (month > -1 && month < 12) {
-      setYear(realDate.getFullYear());
-      setMonth(realDate.getMonth());
-      setDay(realDate.getDate());
-      setHours(realDate.getHours());
-      setMinutes(realDate.getMinutes());
-      setSeconds(realDate.getSeconds());
-      setMilliseconds(realDate.getTime());
-    }
-  }, [month, realDate]);
-
-  useEffect(() => {
-    console.log("day");
-    if (day > 0 && day < 32) {
-      setYear(realDate.getFullYear());
-      setMonth(realDate.getMonth());
-      setDay(realDate.getDate());
-      setHours(realDate.getHours());
-      setMinutes(realDate.getMinutes());
-      setSeconds(realDate.getSeconds());
-      setMilliseconds(realDate.getTime());
-    }
-  }, [day, realDate]);
-
-  useEffect(() => {
-    console.log("hours");
-    if (hours > -1 && hours < 24) {
-      setYear(realDate.getFullYear());
-      setMonth(realDate.getMonth());
-      setDay(realDate.getDate());
-      setHours(realDate.getHours());
-      setMinutes(realDate.getMinutes());
-      setSeconds(realDate.getSeconds());
-      setMilliseconds(realDate.getTime());
-    }
-  }, [hours, realDate]);
-
-  useEffect(() => {
-    console.log("minutes");
-    if (minutes > -1 && minutes < 60) {
-      setYear(realDate.getFullYear());
-      setMonth(realDate.getMonth());
-      setDay(realDate.getDate());
-      setHours(realDate.getHours());
-      setMinutes(realDate.getMinutes());
-      setSeconds(realDate.getSeconds());
-      setMilliseconds(realDate.getTime());
-    }
-  }, [minutes, realDate]);
-
-  useEffect(() => {
-    console.log("seconds");
-
-    if (seconds > -1 && seconds < 60) {
-      setYear(realDate.getFullYear());
-      setMonth(realDate.getMonth());
-      setDay(realDate.getDate());
-      setHours(realDate.getHours());
-      setMinutes(realDate.getMinutes());
-      setSeconds(realDate.getSeconds());
-      setMilliseconds(realDate.getTime());
-    }
-  }, [seconds, realDate]);
-
-  useEffect(() => {
-    console.log("milliseconds");
-
-    setYear(realDate.getFullYear());
-    setMonth(realDate.getMonth());
-    setDay(realDate.getDate());
-    setHours(realDate.getHours());
-    setMinutes(realDate.getMinutes());
-    setSeconds(realDate.getSeconds());
-    setMilliseconds(realDate.getTime());
-  }, [milliseconds, realDate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    formYears,
+    formMonth,
+    formDay,
+    formHours,
+    formMinutes,
+    formSeconds,
+    formMilliseconds,
+    realDate,
+  ]);
 
   if (!isMounted) return null;
   return (
-    <>
-      <div className="flex justify-center items-center flex-col mt-4 w-full">
-        <div className="mt-5">
-          <p className="text-xl text-center">Milliseconds</p>
+    <div className="flex justify-center items-center flex-col mt-4 w-full">
+      <form>
+        <div className="mt-5 flex flex-col justify-center items-center">
+          <p className={largeCenter}>Milliseconds</p>
           <input
             type="number"
-            name="milliseconds"
             id="milliseconds"
-            className="text-black h-8 text-lg w-48"
-            value={milliseconds}
+            className={inputFieldClass}
+            {...register("milliseconds")}
             onChange={(e) => {
               const milli = Number(e.target.value);
-              realDate.setTime(milli);
-              setRealDate(realDate);
-              setMilliseconds(milli);
+              if (milli > -1) {
+                realDate.setTime(milli);
+                setRealDate(realDate);
+              }
+              register("milliseconds", { valueAsNumber: true }).onChange(e);
             }}
           />
         </div>
-        <div className="flex w-full justify-around items-center mt-5 gap-5">
+        <div className={divRow}>
           <div>
-            <p className="text-xl text-center">Year</p>
+            <p className={largeCenter}>Year</p>
             <input
               type="number"
-              name="years"
-              id="years"
-              className="text-black h-8 text-lg w-48"
-              value={year}
+              id="year"
+              className={inputFieldClass}
+              {...register("year")}
               onChange={(e) => {
+                console.log("hellloo");
                 const yrs = Number(e.target.value);
                 if (yrs > 1969) {
                   realDate.setFullYear(yrs);
                   setRealDate(realDate);
                 }
-                setYear(yrs);
+                register("year", { valueAsNumber: true }).onChange(e);
               }}
             />
           </div>
           <div>
-            <p className="text-xl text-center">Month</p>
+            <p className={largeCenter}>Month</p>
             <input
               type="number"
-              name="months"
-              id="months"
-              className="text-black h-8 text-lg w-48"
-              value={month}
+              id="month"
+              className={inputFieldClass}
+              {...register("month")}
               onChange={(e) => {
                 const mth = Number(e.target.value);
                 if (mth > -1 && mth < 12) {
                   realDate.setMonth(mth);
                   setRealDate(realDate);
                 }
-                setMonth(mth);
+                register("month", { valueAsNumber: true }).onChange(e);
               }}
             />
           </div>
         </div>
-        <div className="flex w-full justify-around items-center mt-5 gap-5">
+        <div className={divRow}>
           <div>
-            <p className="text-xl text-center">Day</p>
+            <p className={largeCenter}>Day</p>
             <input
               type="number"
-              name="day"
               id="day"
-              className="text-black h-8 text-lg w-48"
-              value={day}
+              className={inputFieldClass}
+              {...register("day")}
               onChange={(e) => {
                 const dy = Number(e.target.value);
                 if (dy > 0 && dy < 32) {
                   realDate.setDate(dy);
                   setRealDate(realDate);
                 }
-                setDay(dy);
+                register("day", { valueAsNumber: true }).onChange(e);
               }}
             />
           </div>
           <div>
-            <p className="text-xl text-center">Hours</p>
+            <p className={largeCenter}>Hours</p>
             <input
               type="number"
-              name="hour"
-              id="hour"
-              className="text-black h-8 text-lg w-48"
-              value={hours}
+              id="hours"
+              className={inputFieldClass}
+              {...register("hours")}
               onChange={(e) => {
                 const hrs = Number(e.target.value);
                 if (hrs > -1 && hrs < 24) {
                   realDate.setHours(hrs);
+                  setRealDate(realDate);
                 }
-                setHours(hrs);
+                register("hours", { valueAsNumber: true }).onChange(e);
               }}
             />
           </div>
         </div>
-        <div className="flex w-full justify-around items-center mt-5 gap-5">
+        <div className={divRow}>
           <div>
-            <p className="text-xl text-center">Minutes</p>
+            <p className={largeCenter}>Minutes</p>
             <input
               type="number"
-              name="minutes"
               id="minutes"
-              className="text-black h-8 text-lg w-48"
-              value={minutes}
+              className={inputFieldClass}
+              {...register("minutes")}
               onChange={(e) => {
                 const mts = Number(e.target.value);
                 if (mts > -1 && mts < 60) {
                   realDate.setMinutes(mts);
                   setRealDate(realDate);
                 }
-                setMinutes(mts);
+                register("minutes", { valueAsNumber: true }).onChange(e);
               }}
             />
           </div>
           <div>
-            <p className="text-xl text-center">Seconds</p>
+            <p className={largeCenter}>Seconds</p>
             <input
               type="number"
-              name="seconds"
               id="seconds"
-              className="text-black h-8 text-lg w-48"
-              value={seconds}
+              className={inputFieldClass}
+              {...register("seconds")}
               onChange={(e) => {
                 const sec = Number(e.target.value);
                 if (sec > -1 && sec < 60) {
                   realDate.setSeconds(sec);
                 }
-                setSeconds(sec);
+                register("seconds", { valueAsNumber: true }).onChange(e);
               }}
             />
           </div>
         </div>
-        <div className="mt-9">
+        <div className="mt-9 text-center">
+          <p className="text-red-500">{errors.year && errors.year.message}</p>
+          <p className="text-red-500">{errors.month && errors.month.message}</p>
+          <p className="text-red-500">{errors.day && errors.day.message}</p>
+          <p className="text-red-500">{errors.hours && errors.hours.message}</p>
+          <p className="text-red-500">
+            {errors.minutes && errors.minutes.message}
+          </p>
+          <p className="text-red-500">
+            {errors.seconds && errors.seconds.message}
+          </p>
+          <p className="text-red-500">
+            {errors.milliseconds && errors.milliseconds.message}
+          </p>
+
           <p>
             The entered date is{" "}
             <span className="font-semibold">
@@ -312,9 +293,8 @@ const Time = () => {
             .
           </p>
         </div>
-      </div>
-      {/* <div className="border-l border-solid border-green-400 h-96 mt-10"></div> */}
-    </>
+      </form>
+    </div>
   );
 };
 
