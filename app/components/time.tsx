@@ -72,7 +72,7 @@ const Time = () => {
   const formMilliseconds = watch("milliseconds");
 
   const largeCenter = "text-xl text-center";
-  const inputFieldClass = "text-black h-8 text-lg w-48";
+  const inputFieldClass = "text-black h-8 text-lg w-48 border border-black px-0.5";
   const divRow = "flex w-full justify-around items-center mt-5 gap-5";
 
   useEffect(() => {
