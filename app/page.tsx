@@ -67,7 +67,7 @@ export default function Home() {
       <div className="text-center mt-5">
         <h1 className="text-5xl font-medium">Welcome to JS-Time</h1>
         <h3 className={largeCenter}>
-          Where you can play with javascript time.
+          Where you can play with javascript time and date object.
         </h3>
       </div>
       <div className="flex gap-6 justify-center mt-5">
