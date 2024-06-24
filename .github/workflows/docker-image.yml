@@ -20,6 +20,6 @@ jobs:
     - name: Building the Docker image
       run: docker build -t cicd-docker-pipeline .
     - name: Tagging image
-      run: docker tag js-time:latest krishmarsonia07/cicd-docker-pipeline:latest
+      run: docker tag cicd-docker-pipeline:latest krishmarsonia07/cicd-docker-pipeline:latest
     - name: Pushing to DockerHub
       run: docker push krishmarsonia07/cicd-docker-pipeline:latest
