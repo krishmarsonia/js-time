@@ -17,7 +17,9 @@ jobs:
         DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
         DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
       run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-    - name: Build the Docker image
+    - name: Building the Docker image
       run: docker build -t cicd-docker-pipeline .
+    - name: Tagging image
+      run: docker tag js-time:latest krishmarsonia07/cicd-docker-pipeline:latest
     - name: Pushing to DockerHub
       run: docker push krishmarsonia07/cicd-docker-pipeline:latest
