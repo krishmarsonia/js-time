@@ -104,6 +104,9 @@ export default function Home() {
           );
         })}
       </div>
+      <footer className="text-right">
+        <h5 className="text-sm">Made by Krish Marsonia and Vimal Sonara</h5>
+      </footer>
     </main>
   );
 }
